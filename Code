@@ -1,0 +1,335 @@
+#include <iostream>
+#include <chrono>
+#include <random>
+using namespace std;
+
+void create_array(int array[], int SIZE) {//Присваивание рандомных значений
+	long seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine rand(seed);
+	uniform_int_distribution<int> d(-99, 99);
+	for (int i = 0; i != SIZE; i++) {
+		array[i] = d(rand);
+	}
+}
+
+void bubble_sort(int array[], int SIZE) {//Сортировка пузырьклм
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	for (int i = SIZE; i != 0; i--) {
+		for (int j = 0; j != i - 1; j++) {
+			if (array[j] > array[j + 1]) {
+				swap(array[j], array[j + 1]);
+			}
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на сортировку пузырьком" << '\n';
+}
+
+void shaker_sort(int array[], int SIZE) {//сортировка шейкером
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	for (int i = 0; i != SIZE / 2; i++) {
+		for (int j = 0 + i; j != SIZE - 1 - i; j++) {
+			if (array[j] > array[j + 1]) {
+				swap(array[j], array[j + 1]);
+			}
+		}
+		for (int j = SIZE - 2 - i; j != 0 + i; j--) {
+			if (array[j] < array[j - 1]) {
+				swap(array[j], array[j - 1]);
+			}
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на сортировку шэйкером" << '\n';
+}
+
+void comb_sort(int array[], int SIZE) {//Сортировка расчёской
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	for (int i = SIZE - 1; i != 0; i--) {
+		for (int j = 0; j != SIZE - i; j++) {
+			if (array[j] > array[j + i]) {
+				swap(array[j], array[j + i]);
+			}
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на сортировку расчёской" << '\n';
+}
+
+void insert_sort(int array[], int SIZE) {//Сортировка вставками
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	int j;
+	for (int i = 1; i != SIZE; i++) {
+		if (array[i] < array[i - 1]) {
+			j = i;
+			while (array[j] < array[j - 1] && j != 0) {
+				std::swap(array[j], array[j - 1]);
+				j--;
+			}
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на сортировку вставками" << '\n';
+}
+
+void quick_sort(int array[], int first, int last) {//Бинарная сортировка
+	if (first < last) {
+		int opora = array[first], swap_index = first;
+		for (int i = first + 1; i != last + 1; i++) {
+			if (array[i] <= opora) {
+				swap_index++;
+				swap(array[i], array[swap_index]);
+			}
+		}
+		swap(array[first], array[swap_index]);
+		quick_sort(array, first, swap_index - 1);
+		quick_sort(array, swap_index + 1, last);
+	}
+}
+
+void min_max(int array[], int SIZE) {//минимум и максимум
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	int min = 100, max = -100;
+	for (int i = 0; i != SIZE; i++) {
+		if (array[i] > max) {
+			max = array[i];
+		}
+		if (array[i] < min) {
+			min = array[i];
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на выполнение" << '\n';
+	cout << "min = " << min << "  max = " << max << '\n';
+}
+
+void mid(int array[], int SIZE) {//среднее минимума и максимума
+	int min = 100, max = -100, mid, quantity = 0;
+	for (int i = 0; i != SIZE; i++) {
+		if (array[i] > max) {
+			max = array[i];
+		}
+		if (array[i] < min) {
+			min = array[i];
+		}
+	}
+	mid = (min + max) / 2;
+	cout << "Среднее значение = " << mid << '\n';
+	cout << "Индексы элементов: ";
+	for (int i = 0; i != SIZE; i++) {
+		if (array[i] == mid) {
+			cout << " " << i;
+			quantity++;
+		}
+	}
+	cout << '\n' << "Всего - " << quantity << '\n';
+}
+
+void les(int array[], int SIZE, int a) {//меньше А
+	comb_sort(array, SIZE);
+	if (array[SIZE - 1] >= a) {
+		for (int i = 0; i != SIZE; i++) {
+			if (array[i] >= a) {
+				cout << i << " чисел меньше А" << '\n';
+				break;
+			}
+		}
+	}
+	else {
+		cout << SIZE << " чисел меньше А" << '\n';
+	}
+}
+
+void more(int array[], int SIZE, int b) {//больше В
+	comb_sort(array, SIZE);
+	if (array[0] > b) {
+		cout << SIZE << " чисел больше В";
+	}
+	else {
+		for (int i = 0; i != SIZE; i++) {
+			if (array[i] > b) {
+				cout << SIZE - i << " чисел больше В";
+				break;
+			}
+		}
+	}
+}
+
+void z_in_array(int array[], int SIZE, int z) {//z в массиве
+	comb_sort(array, SIZE);
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	bool z_in = 0;
+	for (int i = 0; i != SIZE; i++) {
+		if (array[i] == z) {
+			z_in = 1;
+			break;
+		}
+	}
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration <double> time = end - start;
+	cout << time.count() << " секунд на перебор" << '\n';
+	if (z_in) {
+		cout << "true" << '\n';
+	}
+	else {
+		cout << "false" << '\n';
+	}
+	z_in = 0;
+	start = chrono::system_clock::now();
+	int i = SIZE / 2, quantity = SIZE, log2 = 1, n2 = 2, temp;
+	while (n2 <= SIZE) {
+		n2 *= 2;
+		log2++;
+	}
+	for (int j = 0; j != log2; j++) {
+		if (array[i] == z) {
+			z_in = 1;
+			break;
+		}
+		else if (array[i] < z) {
+			i = (quantity + i) / 2;
+		}
+		else if (array[i] > z) {
+			temp = i;
+			i = i - (quantity - i) / 2;
+			quantity = temp;
+		}
+	}
+	end = chrono::system_clock::now();
+	time = end - start;
+	cout << time.count() << " секунд на бинарный поиск" << '\n';
+	if (z_in) {
+		cout << "true" << '\n';
+	}
+	else {
+		cout << "false" << '\n';
+	}
+}
+
+void swaping(int array[], int k) {//Поменять n-й и m-й местами
+	int n, m;
+tryAgain:
+	cout << "n = ";
+	cin >> n;
+	cout << "m = ";
+	cin >> m;
+	if (n < 0 || n > k - 1 || m < 0 || m > k - 1) {
+		cout << "try again" << '\n' << '\n';
+		goto tryAgain;
+	}
+	chrono::system_clock::time_point start = chrono::system_clock::now();
+	swap(array[n], array[m]);
+	chrono::system_clock::time_point end = chrono::system_clock::now();
+	chrono::duration<double> time = end - start;
+	cout << time.count() << " секунд на перестановку";
+}
+
+int main() {
+	setlocale(0, "");//устанавливаем язык по умолчанию
+	int array[100], punkt;
+	chrono::system_clock::time_point start;
+	chrono::system_clock::time_point end;
+	chrono::duration<double> time;
+start:
+	cout << '\n' << "Выберите пункт" << '\n' << '\n';
+	cout << "0) Выход" << '\n';
+	cout << "1) Создать массив из рандомных чисел" << '\n';
+	cout << "2) Отсортировать массив" << '\n';//Время?
+	cout << "3) Найти max и min" << '\n';//Время? Сорт vs Не сорт
+	cout << "4) Среднее значение max и min, индексы равных ему чисел и их количество" << '\n';
+	cout << "5) Количество чисел, меньше A" << '\n';//В отсорт
+	cout << "6) Количесво чисел, больше B" << '\n';//В отсорт
+	cout << "7) Есть ли число Z в массиве" << '\n';//Время? Бинарный vs Перебор
+	cout << "8) Поменять местами n-й и m-й элемент" << '\n';//Время?
+	cout << "9) Вывести массив на экран" << '\n' << '\n';
+	cin >> punkt;
+	cout << '\n';
+	switch (punkt)
+	{
+	case 0:
+		return 0;
+		break;
+	case 1:
+		create_array(array, sizeof(array) / 4);
+		break;
+	case 2:
+	tryAgain2:
+		int sort;
+		cout << "Выберити тип сортировки" << '\n' << '\n';
+		cout << "1) Сортировка пузырьком" << '\n';
+		cout << "2) Сортировка шэйкером" << '\n';
+		cout << "3) Сортировка расчёской" << '\n';
+		cout << "4) Сортировка вставками" << '\n';
+		cout << "5) Бинарная сортировкка" << '\n' << '\n';
+		cin >> sort;
+		switch (sort) {
+		case 1:
+			bubble_sort(array, sizeof(array) / 4);
+			break;
+		case 2:
+			shaker_sort(array, sizeof(array) / 4);
+			break;
+		case 3:
+			comb_sort(array, sizeof(array) / 4);
+			break;
+		case 4:
+			insert_sort(array, sizeof(array) / 4);
+			break;
+		case 5:
+			start = chrono::system_clock::now();
+			quick_sort(array, 0, sizeof(array) / 4 - 1);
+			end = chrono::system_clock::now();
+			time = end - start;
+			cout << time.count() << " секунд на сортровку";
+			break;
+		default:
+			cout << "try againt" << '\n' << '\n';
+			goto tryAgain2;
+			break;
+		}
+		break;
+	case 3:
+		min_max(array, sizeof(array) / 4);
+		break;
+	case 4:
+		mid(array, sizeof(array) / 4);
+		break;
+	case 5:
+		int a;
+		cout << "А = ";
+		cin >> a;
+		les(array, sizeof(array) / 4, a);
+		break;
+	case 6:
+		int b;
+		cout << "B = ";
+		cin >> b;
+		more(array, sizeof(array) / 4, b);
+		break;
+	case 7:
+		int z;
+		cout << "Z = ";
+		cin >> z;
+		z_in_array(array, sizeof(array) / 4, z);
+		break;
+	case 8:
+		swaping(array, sizeof(array));
+		break;
+	case 9:
+		for (int i = 0; i != sizeof(array) / 4; i++) {
+			cout << array[i] << " ";
+		}
+		cout << '\n';
+		break;
+	default:
+		cout << "try again" << '\n' << '\n';
+		goto start;
+		break;
+	}
+	goto start;
+}
