@@ -76,7 +76,7 @@ void insert_sort(int array[], int SIZE) {//Сортировка вставкам
 	cout << time.count() << " секунд на сортировку вставками" << '\n';
 }
 
-void quick_sort(int array[], int first, int last) {//Бинарная сортировка
+void quick_sort(int array[], int first, int last) {//Быстрая сортировка
 	if (first < last) {
 		int opora = array[first], swap_index = first;
 		for (int i = first + 1; i != last + 1; i++) {
@@ -149,6 +149,9 @@ void more(int array[], int SIZE, int b) {//больше В
 	comb_sort(array, SIZE);
 	if (array[0] > b) {
 		cout << SIZE << " чисел больше В";
+	}
+	else if (array[SIZE - 1] <= b) {
+		cout << "таких чисел нет";
 	}
 	else {
 		for (int i = 0; i != SIZE; i++) {
@@ -265,7 +268,7 @@ start:
 		cout << "2) Сортировка шэйкером" << '\n';
 		cout << "3) Сортировка расчёской" << '\n';
 		cout << "4) Сортировка вставками" << '\n';
-		cout << "5) Бинарная сортировкка" << '\n' << '\n';
+		cout << "5) Быстрая сортировкка" << '\n' << '\n';
 		cin >> sort;
 		switch (sort) {
 		case 1:
